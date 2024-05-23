@@ -1,16 +1,8 @@
 import * as net from 'net';
 
 const server = net.createServer((socket) => {
-    socket.on('data', (data) => {
-        const request = data.toString().trim();
-
-        if (request === '/') {
-            socket.write("HTTP/1.1 200 OK\r\n\r\n");
-        } else {
-            socket.write('Unknown route');
-        }
-        socket.end();
-    })
+    socket.write("HTTP/1.1 200 OK\r\n\r\n");
+    socket.end();
 });
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
