@@ -4,8 +4,11 @@ const server = net.createServer((socket) => {
 
     socket.on('data', (data) => {
         const request = data.toString().trim();
+        const [requestLine] = request.split('\r\n');
+        const [method, url] = requestLine.split(' ');
 
-        console.log(request);
+
+        console.log(method, url);
         if (request === '/') {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
         } else {
