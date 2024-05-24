@@ -7,9 +7,10 @@ const server = net.createServer((socket) => {
         const [requestLine] = request.split('\r\n');
         const [method, url] = requestLine.split(' ');
 
-
+        console.log(request, 'request')
+        console.log(requestLine, 'requestLine');
         console.log(method, url);
-        if (request === '/') {
+        if (url === '/') {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
         } else {
             socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
