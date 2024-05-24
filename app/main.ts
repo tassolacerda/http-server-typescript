@@ -5,6 +5,7 @@ const server = net.createServer((socket) => {
     socket.on('data', (data) => {
         const request = data.toString().trim();
 
+        console.log(request);
         if (request === '/') {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
         } else {
