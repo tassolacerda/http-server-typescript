@@ -4,10 +4,10 @@ const server = net.createServer((socket) => {
 
     socket.on('data', (data) => {
         const request = data.toString().trim();
-        const [requestLine] = request.split('\r\n');
+        const [requestLine, _baseURL, _accept, userAgent] = request.split('\r\n');
         const [method, url] = requestLine.split(' ');
 
-        console.log(request, 'request')
+        console.log('requestStart', request, 'requestFinish')
         console.log(requestLine, 'requestLine');
         console.log(method, url);
 
@@ -30,6 +30,11 @@ const server = net.createServer((socket) => {
 
         if (url === '/') {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
+        } else if (url === '/user-agent') {
+            const splittedUserAgent = userAgent.split(': ');
+            socket.write(
+                `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${splittedUserAgent[1].length}\r\n\r\n${splittedUserAgent[1]}`
+            );
         } else if (verifyIfURLContainsEcho(url)) {
                 const splittedURL = url.split('/echo/');
                 console.log(splittedURL);
