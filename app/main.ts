@@ -10,12 +10,37 @@ const server = net.createServer((socket) => {
         console.log(request, 'request')
         console.log(requestLine, 'requestLine');
         console.log(method, url);
+
+        const verifyIfURLContainsEcho = (url) => {
+            if (url.includes('echo')) {
+                const baseURL = url;
+                const splittedURL = baseURL.split('/echo/');
+
+                if (baseURL === `/echo/${splittedURL[1]}`) {
+                    return true
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+
+
         if (url === '/') {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
+        } else if (verifyIfURLContainsEcho(url)) {
+                const splittedURL = url.split('/echo/');
+                console.log(splittedURL);
+                socket.write(
+                    `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${splittedURL[1].length}\r\n\r\n${splittedURL[1]}`
+                );
         } else {
             socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
         }
         socket.end();
+
     })
 });
 
